@@ -1,8 +1,22 @@
 name: Autocheck
 
+# Кто что может:
+# - Код: при Public репо любой видит.
+# - workflow_dispatch («Run workflow»): только у кого есть write в репо (так устроен GitHub).
+# - pull_request: проверка запускается при PR из форка/ветки (ученик: fork → push → PR) —
+#   внешним с manual «Run» не пользуемся, зато CI уходит на их код. Первый PR из форка:
+#   Settings → Actions — при необходимости одобрить run для внешнего contributor.
 on:
   push:
+  pull_request:
+    branches: [main]
   workflow_dispatch:
+
+# Репозиторий: Settings → Actions → General — «Workflow permissions» = Read and write
+# при необходимости; иначе чек-чек выложит HTML в артефакты.
+permissions:
+  contents: read
+  actions: write
 
 jobs:
   compare:
